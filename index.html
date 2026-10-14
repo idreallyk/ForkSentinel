@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>ForkSentinel — Perception-Guided Autonomous Forklift Control and Capability Evaluation</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Research project overview, method, data, and evaluation. -->
+  <header class="site-header" data-section="navigation">
+    <div class="container navigation-shell">
+      <a class="wordmark" href="#project-title">ForkSentinel<span aria-hidden="true">.</span></a>
+      <nav class="page-navigation" aria-label="Project navigation">
+        <a href="#overview">Overview</a><a href="#task">Task</a><a href="#method">Method</a><a href="#result">Result</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="hero container" data-section="hero" aria-labelledby="project-title">
+      <h1 class="project-title" id="project-title" data-slot="title">ForkSentinel</h1>
+      <p class="project-subtitle" data-slot="subtitle">Perception-Guided Autonomous Forklift Control<br class="subtitle-break"> and Capability Evaluation</p>
+    </section>
+    <section class="trajectory-demo container" id="trajectory-demo" aria-labelledby="demo-title">
+      <div class="demo-heading">
+        <h2 id="demo-title">A complete warehouse pickup</h2>
+        <p>T008 · Target EG2 · Geometry-guided · Strict success</p>
+      </div>
+      <figure class="demo-sequence" aria-label="Sixteen consecutive sampled frames from the T008 trajectory">
+        <div class="demo-sequence-scroll" tabindex="0" aria-label="Trajectory frames; scroll horizontally on smaller screens">
+          <div class="demo-sequence-track">
+            <div class="demo-sequence-row">
+              <div class="demo-sequence-label"><strong>Navigate</strong><span>Third-person view</span></div>
+              <div class="demo-sequence-frames">
+                <button type="button" class="demo-frame-button" data-demo-stage="sequence-01" data-demo-time="0.000000" aria-label="Play Navigate at 0.0 seconds, Third-person view"><img src="assets/t008-sequence-01.jpg" width="848" height="480" alt="Navigate, Third-person view, at 0.0 seconds." decoding="async"><span class="demo-time">0.0 s</span></button>
+                <button type="button" class="demo-frame-button" data-demo-stage="sequence-02" data-demo-time="7.016667" aria-label="Play Navigate at 7.0 seconds, Third-person view"><img src="assets/t008-sequence-02.jpg" width="848" height="480" alt="Navigate, Third-person view, at 7.0 seconds." decoding="async"><span class="demo-time">7.0 s</span></button>
+                <button type="button" class="demo-frame-button" data-demo-stage="sequence-03" data-demo-time="14.016667" aria-label="Play Navigate at 14.0 seconds, Third-person view"><img src="assets/t008-sequence-03.jpg" width="848" height="480" alt="Navigate, Third-person view, at 14.0 seconds." decoding="async"><span class="demo-time">14.0 s</span></button>
+                <button type="button" class="demo-frame-button" data-demo-stage="sequence-04" data-demo-time="21.016668" aria-label="Play Navigate at 21.0 seconds, Third-person view"><img src="assets/t008-sequence-04.jpg" width="848" height="480" alt="Navigate, Third-person view, at 21.0 seconds." decoding="async"><span class="demo-time">21.0 s</span></button>
+                <button type="button" class="demo-frame-button" data-demo-stage="sequence-05" data-demo-time="28.016668" aria-label="Play Navigate at 28.0 seconds, Third-person view"><img src="assets/t008-sequence-05.jpg" width="848" height="480" alt="Navigate, Third-person view, at 28.0 seconds." decoding="async"><span class="demo-time">28.0 s</span></button>
+                <button type="button" class="demo-frame-button" data-demo-stage="sequence-06" data-demo-time="35.016668" aria-label="Play Navigate at 35.0 seconds, Third-person view"><img src="assets/t008-sequence-06.jpg" width="848" height="480" alt="Navigate, Third-person view, at 35.0 seconds." decoding="async"><span class="demo-time">35.0 s</span></button>
+                <button type="button" class="demo-frame-button" data-demo-stage="sequence-07" data-demo-time="42.016669" aria-label="Play Navigate at 42.0 seconds, Third-person view"><img src="assets/t008-sequence-07.jpg" width="848" height="480" alt="Navigate, Third-person view, at 42.0 seconds." decoding="async"><span class="demo-time">42.0 s</span></button>
+                <button type="button" class="demo-frame-button" data-demo-stage="sequence-08" data-demo-time="47.083336" aria-label="Play Navigate at 47.1 seconds, Third-person view"><img src="assets/t008-sequence-08.jpg" width="848" height="480" alt="Navigate, Third-person view, at 47.1 seconds." decoding="async"><span class="demo-time">47.1 s</span></button>
+              </div>
+            </div>
+            <div class="demo-sequence-row">
+              <div class="demo-sequence-label"><strong>Align &rarr; Insert &rarr; Lift &amp; hold</strong><span>Main RGB</span></div>
+              <div class="demo-sequence-frames">
+                <button type="button" class="demo-frame-button" data-demo-stage="sequence-09" data-demo-time="47.083336" aria-label="Play Align at 47.1 seconds, Main RGB"><img src="assets/t008-sequence-09.jpg" width="848" height="480" alt="Align, Main RGB, at 47.1 seconds." decoding="async"><span class="demo-time">47.1 s</span></button>
+                <button type="button" class="demo-frame-button" data-demo-stage="sequence-10" data-demo-time="53.016669" aria-label="Play Align at 53.0 seconds, Main RGB"><img src="assets/t008-sequence-10.jpg" width="848" height="480" alt="Align, Main RGB, at 53.0 seconds." decoding="async"><span class="demo-time">53.0 s</span></button>
+                <button type="button" class="demo-frame-button" data-demo-stage="sequence-11" data-demo-time="59.283336" aria-label="Play Align at 59.3 seconds, Main RGB"><img src="assets/t008-sequence-11.jpg" width="848" height="480" alt="Align, Main RGB, at 59.3 seconds." decoding="async"><span class="demo-time">59.3 s</span></button>
+                <button type="button" class="demo-frame-button" data-demo-stage="sequence-12" data-demo-time="61.483337" aria-label="Play Insert at 61.5 seconds, Main RGB"><img src="assets/t008-sequence-12.jpg" width="848" height="480" alt="Insert, Main RGB, at 61.5 seconds." decoding="async"><span class="demo-time">61.5 s</span></button>
+                <button type="button" class="demo-frame-button" data-demo-stage="sequence-13" data-demo-time="65.016670" aria-label="Play Insert at 65.0 seconds, Main RGB"><img src="assets/t008-sequence-13.jpg" width="848" height="480" alt="Insert, Main RGB, at 65.0 seconds." decoding="async"><span class="demo-time">65.0 s</span></button>
+                <button type="button" class="demo-frame-button" data-demo-stage="sequence-14" data-demo-time="69.416670" aria-label="Play Insert at 69.4 seconds, Main RGB"><img src="assets/t008-sequence-14.jpg" width="848" height="480" alt="Insert, Main RGB, at 69.4 seconds." decoding="async"><span class="demo-time">69.4 s</span></button>
+                <button type="button" class="demo-frame-button" data-demo-stage="sequence-15" data-demo-time="70.950004" aria-label="Play Lift and hold at 71.0 seconds, Main RGB"><img src="assets/t008-sequence-15.jpg" width="848" height="480" alt="Lift and hold, Main RGB, at 71.0 seconds." decoding="async"><span class="demo-time">71.0 s</span></button>
+                <button type="button" class="demo-frame-button" data-demo-stage="sequence-16" data-demo-time="72.950004" aria-label="Play Lift and hold at 73.0 seconds, Main RGB"><img src="assets/t008-sequence-16.jpg" width="848" height="480" alt="Lift and hold, Main RGB, at 73.0 seconds." decoding="async"><span class="demo-time">73.0 s</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <figcaption>16 sampled frames from one continuous trajectory. Read left to right, then continue on the next row.</figcaption>
+      </figure>
+      <div class="demo-player">
+        <div class="demo-view-switcher" role="group" aria-label="Video view">
+          <button type="button" aria-pressed="true" data-demo-view="all" data-video-src="assets/t008-all.mp4">All views</button>
+          <button type="button" aria-pressed="false" data-demo-view="main" data-video-src="assets/t008-main.mp4">Main RGB</button>
+          <button type="button" aria-pressed="false" data-demo-view="depth" data-video-src="assets/t008-depth.mp4">Depth</button>
+          <button type="button" aria-pressed="false" data-demo-view="third" data-video-src="assets/t008-third.mp4">Third person</button>
+        </div>
+        <video id="demo-video" class="demo-video" controls playsinline preload="metadata" poster="assets/t008-poster.jpg" src="assets/t008-all.mp4" aria-label="T008 demonstration rerun, all views">
+          Your browser does not support inline video. <a href="assets/t008-all.mp4">Open the full trajectory video.</a>
+        </video>
+        <p class="demo-caption">A successful 72.9 s demonstration rerun of T008, from warehouse navigation to insertion, lift and hold. Shown at 1× with main RGB, metric depth and a following third-person camera. Select any frame to jump to that moment.</p>
+        <span class="visually-hidden" id="demo-view-status" aria-live="polite"></span>
+      </div>
+    </section>
+    <section class="overview-section container" id="overview" data-section="overview" aria-labelledby="overview-title">
+      <div class="section-intro">
+        <p class="eyebrow">Overview</p>
+        <h2 id="overview-title">Geometry-guided forklift pickup.</h2>
+        <p class="section-lead">ForkSentinel combines metric 3D perception with staged control for autonomous forklift pickup. We evaluate the complete trajectory from warehouse navigation to insertion and load verification, alongside π0.5 and OpenVLA-OFT adapted from shared expert demonstrations.</p>
+        <p class="overview-summary">Two evaluations separate full-trajectory performance from local insertion capability. Both report strict task completion and fork entry.</p>
+      </div>
+    </section>
+    <section class="task-section container" id="task" data-section="task" aria-labelledby="task-title">
+      <div class="section-intro">
+        <p class="eyebrow">Task</p>
+        <h2 id="task-title">From a warehouse start pose<br>to a precise insertion.</h2>
+        <p class="section-lead">Starting from a valid pose anywhere in the warehouse, the forklift must navigate to a designated rack, align with the target pallet, and insert both forks. The evaluated trajectory also includes a lifting-and-holding check to verify load handling.</p>
+      </div>
+      <ul class="task-stages" aria-label="Full trajectory stages">
+        <li><div><strong>Navigate</strong><span>Reach the designated rack.</span></div></li>
+        <li><div><strong>Align</strong><span>Match the two pallet openings.</span></div></li>
+        <li><div><strong>Insert</strong><span>Meet the pre-lift geometry limits.</span></div></li>
+        <li><div><strong>Verify</strong><span>Lift the load and hold.</span></div></li>
+      </ul>
+      <figure class="publication-figure" id="success">
+        <a class="publication-artwork" href="assets/task-overview.png" target="_blank" rel="noopener" aria-label="Open the full-resolution task and insertion schematic">
+          <img class="publication-full" src="assets/task-overview.png" width="1536" height="1024" alt="Two-panel technical schematic. Panel a shows an illustrative route from a warehouse start pose to a target pallet at a left-hand rack. Panel b labels the insertion checkpoint: depth d = 58–74.2 cm, lateral alignment error H ≤ 5 cm, and maximum 3D pallet displacement D ≤ 3.5 cm." decoding="async">
+          <div class="publication-mobile">
+            <div class="publication-crop publication-crop-a"><img src="assets/task-overview.png" width="1536" height="1024" alt="Panel a: warehouse navigation from the starting forklift to a target pallet at a left-hand rack." decoding="async"></div>
+            <div class="publication-crop publication-crop-b"><img src="assets/task-overview.png" width="1536" height="1024" alt="Panel b: insertion depth d = 58–74.2 cm, fork-to-pocket alignment H ≤ 5 cm, and maximum 3D pallet displacement D ≤ 3.5 cm." decoding="async"></div>
+          </div>
+        </a>
+        <figcaption>
+          <p><strong>a,</strong> Navigation from a valid warehouse start pose to the designated pallet at a left-hand rack. <strong>b, Insertion checkpoint.</strong> All three geometric conditions below must pass; crossing the pallet entrance alone is insufficient.</p>
+          <dl class="figure-legend">
+            <div><dt><i>d</i> = 58–74.2 cm</dt><dd><strong>Insertion depth.</strong> Each fork must lie within this window at the final valid sample strictly before lift-start.</dd></div>
+            <div><dt><i>H</i> ≤ 5 cm</dt><dd><strong>Fork-to-pocket alignment.</strong> At that same sample, the larger of the two fork-tip lateral errors, each measured against its own nominal pocket center, must be within this limit.</dd></div>
+            <div><dt><i>D</i> ≤ 3.5 cm</dt><dd><strong>Pallet displacement.</strong> The maximum 3D displacement of the pallet center from its pickup-start position must stay within this limit throughout the pre-lift interval.</dd></div>
+          </dl>
+          <div class="figure-evidence" id="evidence">
+            <p><strong>Model geometry.</strong> On the 80.2 cm-deep pallet model, the depth window spans about 72–92% of the pallet depth and leaves about 6.1 cm to the rear edge at its upper bound. The channels are roughly 36.1 cm wide and the forks 16 cm wide; the 5 cm alignment limit measures precision within that clearance. These dimensions support interpreting the project settings; they do not make the exact thresholds industrial standards.</p>
+            <p><strong>Operational guidance.</strong> <a href="https://www.ccohs.ca/oshanswers/safety_haz/forklift/load.html" target="_blank" rel="noopener noreferrer">CCOHS</a> advises: <q>Insert the fork all the way under the load</q>, and cautions against rear protrusion in tight stacking. This supports adequate engagement and rear clearance, without prescribing our depth window.</p>
+            <p><strong>Research basis.</strong> <a href="https://arxiv.org/html/2503.14331v2#S4.SS3" target="_blank" rel="noopener noreferrer">Huemer et al., ADAPT, §4.3</a> derives platform-specific insertion tolerances from geometry and reports a lateral tolerance of ±5 cm.</p>
+          </div>
+        </figcaption>
+      </figure>
+    </section>
+    <section class="section research-section container" id="method" data-section="method" aria-labelledby="method-title">
+      <div class="section-intro">
+        <p class="eyebrow">Method</p>
+        <h2 id="method-title">Metric geometry.<br>Staged control.</h2>
+        <p class="section-lead">Our controller converts calibrated metric depth into a fitted cargo front face, tracks the resulting relative pose with odometry, and uses that geometric feedback to align, insert, and lift. Two adapted VLA policies provide the comparison.</p>
+      </div>
+      <figure class="publication-figure research-figure method-figure">
+        <a class="publication-artwork" href="assets/method-data.png" target="_blank" rel="noopener" aria-label="Open the geometry-guided control architecture and control geometry at full resolution">
+          <img class="publication-full" src="assets/method-data.png" width="1536" height="1024" alt="Panel a: a closed loop from metric depth through backprojection, cargo-face fitting, cargo-center recovery and odometry time alignment to Align, Insert and Lift control. Panel b: top-view geometry shows the cargo center, nominal fork-tip reference and lateral, longitudinal and heading errors." decoding="async" loading="lazy">
+          <div class="publication-mobile">
+            <div class="publication-crop research-crop-a"><img src="assets/method-data.png" width="1536" height="1024" alt="Panel a: geometric perception and staged control, with camera calibration, dimensions, slot prior, wheel odometry and observation feedback." decoding="async" loading="lazy"></div>
+            <div class="publication-crop research-crop-b"><img src="assets/method-data.png" width="1536" height="1024" alt="Panel b: control errors are defined relative to the estimated cargo center and its face normal and tangent; the longitudinal control coordinate differs from the scored insertion depth." decoding="async" loading="lazy"></div>
+          </div>
+        </a>
+        <figcaption><strong>a, Geometry-guided loop.</strong> Calibrated depth and scene priors recover a cargo center; wheel odometry aligns the estimate with the current control frame. The resulting errors drive alignment, insertion and lifting. <strong>b, Control geometry.</strong> The fitted face defines normal <i>n</i> and tangent <i>t</i>; known cargo depth locates the center <span class="inline-math">Ĉ</span>. Control errors relate this center to the nominal fork-tip reference <i>f</i>. Exact signed definitions appear below. <a href="assets/method-data.png" target="_blank" rel="noopener">View figure ↗</a></figcaption>
+      </figure>
+      <div class="method-equations" aria-label="Geometry estimation and staged control equations">
+        <div class="equation-block">
+          <p class="equation-label">Depth back-projection</p>
+          <div class="equation"><math display="block" aria-label="The optical-frame point equals pixel depth times the inverse intrinsic matrix times the homogeneous pixel vector."><msub><mi>p</mi><mi>O</mi></msub><mo>=</mo><mi>z</mi><mo>(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo>)</mo><msup><mi>K</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><msup><mrow><mo>[</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo>,</mo><mn>1</mn><mo>]</mo></mrow><mi>T</mi></msup></math></div>
+          <p>Metric depth <i>z</i> and calibrated intrinsics <i>K</i> recover points in the optical frame <i>O</i>. The calibrated camera transform, corrected for fork height, maps them into body frame <i>B</i>; the target-slot prior and height band select the fitting region.</p>
+        </div>
+        <div class="equation-block">
+          <p class="equation-label">Cargo face and center</p>
+          <div class="equation"><math display="block" aria-label="The face offset rho is the median normal projection of the inlier points."><mi>ρ</mi><mo>=</mo><munder><mo>median</mo><mi>i</mi></munder><mo>(</mo><msup><mi mathvariant="bold">n</mi><mi>T</mi></msup><msub><mi mathvariant="bold">x</mi><mi>i</mi></msub><mo>)</mo></math></div>
+          <div class="equation"><math display="block" aria-label="The body-frame cargo center equals face offset plus half the cargo depth along the normal, plus the tangent midpoint along the tangent."><msub><mover><mi>C</mi><mo>^</mo></mover><mi>B</mi></msub><mo>=</mo><mo>(</mo><mi>ρ</mi><mo>+</mo><mfrac><mi>L</mi><mn>2</mn></mfrac><mo>)</mo><mi mathvariant="bold">n</mi><mo>+</mo><mover><mi>q</mi><mo>¯</mo></mover><mi mathvariant="bold">t</mi></math></div>
+          <p>A slot-guided normal search and two principal-component refinements fit the front face. Here <span class="inline-math"><b><i>x</i></b><sub>i</sub></span> are horizontal inlier coordinates in body frame <i>B</i>; <b><i>n</i></b> and <b><i>t</i></b> are the face’s unit normal and tangent. The midpoint <span class="inline-math">q̄</span> of the 1st and 99th tangent percentiles and known cargo depth <span class="inline-math">L = 0.50 m</span> recover the center; geometric validity checks reject unsuitable fits.</p>
+        </div>
+        <div class="equation-block">
+          <p class="equation-label">Capture-time alignment</p>
+          <div class="equation"><math display="block" aria-label="At capture time c, transform the estimated center into odometric frame W using position p c and heading psi c."><msub><mover><mi>C</mi><mo>^</mo></mover><mi>W</mi></msub><mo>=</mo><msub><mi>p</mi><mi>c</mi></msub><mo>+</mo><mi>R</mi><mo>(</mo><msub><mi>ψ</mi><mi>c</mi></msub><mo>)</mo><msub><mover><mi>C</mi><mo>^</mo></mover><mtext>B,c</mtext></msub></math></div>
+          <div class="equation"><math display="block" aria-label="At current time t, transform the odometric center into the current body frame using the current odometry position and heading."><msub><mover><mi>C</mi><mo>^</mo></mover><mtext>B,t</mtext></msub><mo>=</mo><mi>R</mi><mo>(</mo><mo>−</mo><msub><mi>ψ</mi><mi>t</mi></msub><mo>)</mo><mo>(</mo><msub><mover><mi>C</mi><mo>^</mo></mover><mi>W</mi></msub><mo>−</mo><msub><mi>p</mi><mi>t</mi></msub><mo>)</mo></math></div>
+          <p>Wheel odometry aligns an observation captured at time <i>c</i> with control time <i>t</i> through odometric frame <i>W</i>. Here <i>p</i> and <i>ψ</i> are odometric position and heading, and <i>R</i> is planar rotation; the face normal is rotated consistently.</p>
+        </div>
+        <div class="equation-block">
+          <p class="equation-label">Relative control errors</p>
+          <div class="equation"><math display="block" aria-label="Delta is the nominal fork-tip reference minus the current estimated cargo center."><mi>Δ</mi><mo>=</mo><mi mathvariant="bold">f</mi><mo>−</mo><msub><mover><mi>C</mi><mo>^</mo></mover><mtext>B,t</mtext></msub></math></div>
+          <div class="equation"><math display="block" aria-label="Lateral error is minus Delta projected on the tangent."><msub><mi>e</mi><mtext>lat</mtext></msub><mo>=</mo><mo>−</mo><msup><mi>Δ</mi><mi>T</mi></msup><mi mathvariant="bold">t</mi></math></div>
+          <div class="equation"><math display="block" aria-label="Yaw error is the wrapped negative angle of the current face normal."><msub><mi>e</mi><mtext>yaw</mtext></msub><mo>=</mo><mo>wrap</mo><mo>(</mo><mo>−</mo><mi>α</mi><mo>)</mo></math></div>
+          <div class="equation"><math display="block" aria-label="Longitudinal error is Delta projected on the face normal."><msub><mi>e</mi><mtext>long</mtext></msub><mo>=</mo><msup><mi>Δ</mi><mi>T</mi></msup><mi mathvariant="bold">n</mi></math></div>
+          <p>The nominal fork-tip reference is <span class="inline-math"><b><i>f</i></b> = [2.146, 0]<sup>T</sup> m</span> in the body frame; <i>α</i> is the current face-normal angle. The cargo-center-relative coordinate <span class="inline-math">e<sub>long</sub></span> differs from insertion depth <i>d</i> used to score success.</p>
+        </div>
+        <div class="equation-block">
+          <p class="equation-label">Stage-dependent control</p>
+          <div class="equation"><math display="block" aria-label="The remaining longitudinal distance in stage s equals the stage target minus the longitudinal coordinate."><msub><mi>r</mi><mi>s</mi></msub><mo>=</mo><msub><mi>ℓ</mi><mi>s</mi></msub><mo>−</mo><msub><mi>e</mi><mtext>long</mtext></msub></math></div>
+          <div class="equation"><math display="block" aria-label="While driving, stage speed is one half the remaining distance clipped to the stage's speed interval."><msub><mi>v</mi><mi>s</mi></msub><mo>=</mo><msub><mo>clip</mo><mi>s</mi></msub><mo>(</mo><mn>0.5</mn><msub><mi>r</mi><mi>s</mi></msub><mo>)</mo></math></div>
+          <div class="equation"><math display="block" aria-label="The steering request equals the stage's lateral gain times lateral error plus yaw gain times yaw error."><msub><mi>δ</mi><mtext>req,s</mtext></msub><mo>=</mo><msub><mi>k</mi><mtext>lat,s</mtext></msub><msub><mi>e</mi><mtext>lat</mtext></msub><mo>+</mo><msub><mi>k</mi><mtext>yaw,s</mtext></msub><msub><mi>e</mi><mtext>yaw</mtext></msub></math></div>
+          <p><strong>Align:</strong> target <span class="inline-math">ℓ = −0.55 m</span>, gains <span class="inline-math">(k<sub>lat</sub>, k<sub>yaw</sub>) = (12, −3)</span>, speed 0.03–0.08 m/s.<br><strong>Insert:</strong> target <span class="inline-math">ℓ = 0.22 m</span>, gains <span class="inline-math">(1.5, −1.5)</span>, speed 0.025–0.10 m/s.</p>
+          <p>The clipping operator uses each stage’s speed interval while driving; distances use meters and angles radians. Measured fork-height gates and stage completion govern when to move, and execution limits bound the requested actions; geometry supplies the pose directly.</p>
+        </div>
+      </div>
+      <div class="data-intro editorial-row">
+        <div><p class="eyebrow">Demonstrations</p><h3>One shared dataset<br>for the VLA baselines.</h3></div>
+        <div class="editorial-copy"><p><strong>382 successful expert episodes · 101,894 frames.</strong> The demonstrations cover alignment, insertion, and lifting. A split by seed assigns <strong>344 episodes to training</strong> and <strong>38 to validation</strong>.</p><p>Both policies use the same training split. The held-out episodes monitor OpenVLA-OFT; π0.5 consumes only the training split.</p></div>
+      </div>
+      <div class="training-flow" role="group" aria-label="Shared expert training split, two independently adapted policies, and their common action-chunk interface">
+        <div class="training-flow-node"><strong>Expert demonstrations</strong><span>344 training episodes</span></div>
+        <span class="flow-arrow" aria-hidden="true">→</span>
+        <div class="training-flow-policies">
+          <div class="training-flow-node"><strong>π0.5</strong><span>LoRA adaptation</span></div>
+          <div class="training-flow-node"><strong>OpenVLA-OFT</strong><span>LoRA + continuous action head</span></div>
+        </div>
+        <span class="flow-arrow" aria-hidden="true">→</span>
+        <div class="training-flow-node"><strong>Action chunks</strong><span>8 steps × 3 commands</span></div>
+      </div>
+      <div class="table-scroll training-table-wrap" tabindex="0" role="region" aria-label="VLA training settings; scroll horizontally on small screens">
+        <table class="research-table training-table">
+          <caption>Adapting the two pretrained policies</caption>
+          <thead><tr><th scope="col">Policy</th><th scope="col">Initialization</th><th scope="col">Adaptation</th><th scope="col">Updates</th><th scope="col">Batch</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">π0.5</th><td>π0.5 base</td><td>LoRA on the vision–language backbone and action expert</td><td>20,000</td><td>32</td></tr>
+            <tr><th scope="row">OpenVLA-OFT</th><td>OpenVLA 7B</td><td>Rank-32 LoRA, continuous L1 action head, and proprioception projector</td><td>40,000</td><td>16<span class="table-detail">8 × 2 accumulation</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="policy-contract">
+        <div class="equation"><math display="block" aria-label="The policy maps the image, state, and instruction to an action chunk with eight steps and three commands per step."><msub><mover><mi>A</mi><mo>^</mo></mover><mi>t</mi></msub><mo>=</mo><msub><mi>π</mi><mi>θ</mi></msub><mo>(</mo><msub><mi>I</mi><mi>t</mi></msub><mo>,</mo><msub><mi>s</mi><mi>t</mi></msub><mo>,</mo><mi>ℓ</mi><mo>)</mo><mo>∈</mo><msup><mi mathvariant="double-struck">R</mi><mrow><mn>8</mn><mo>×</mo><mn>3</mn></mrow></msup></math></div>
+        <p><strong>Input:</strong> fork-mounted RGB, task instruction, and state <span class="inline-math">s<sub>t</sub> = (fork height, steering, forward speed)</span>. <strong>Output:</strong> eight actions, each commanding forward speed, steering, and fork vertical velocity.</p>
+        <p class="contract-timing"><strong>15 Hz</strong> action execution <span aria-hidden="true">/</span> <strong>8</strong> actions per chunk <span aria-hidden="true">=</span> <strong>1.875 Hz</strong> nominal fresh-image replanning.</p>
+      </div>
+      <aside class="diagnostic-note"><strong>Head-only diagnostic.</strong> A learned depth-pose head replaces the geometric estimate while retaining the same staged controller. It takes depth and a valid-pixel mask, has 77,779 parameters, and was trained on 416 of 500 episodes, with 84 held out. The full geometry-guided system uses the geometric estimate directly.</aside>
+    </section>
+    <section class="section research-section container" id="result" data-section="result" aria-labelledby="result-title">
+      <div class="section-intro">
+        <p class="eyebrow">Result</p>
+        <h2 id="result-title">Two evaluations.<br>Two definitions of success.</h2>
+        <p class="section-lead">We compare complete navigation-and-pickup trajectories and isolated local pickup. Each recorded trajectory receives two scores: completion of the strict task protocol, and the simpler event of both fork tips crossing the pallet entrance plane.</p>
+      </div>
+      <div class="evaluation-scopes">
+        <div><p class="scope-code">N / Full trajectory</p><h3>100 tasks per method</h3><p>Three methods, 300 assigned tasks. Navigate from a warehouse start pose to the designated pallet, then perform pickup.</p></div>
+        <div><p class="scope-code">C / Local insertion</p><h3>18 starts × 4 methods = 72</h3><p>Two slots (WG1, EG2) × three yaw offsets (−5°, 0°, +5°) × three lateral offsets (−10, 0, +10 cm).</p></div>
+      </div>
+      <figure class="publication-figure research-figure evaluation-figure">
+        <a class="publication-artwork" href="assets/evaluation-design.png" target="_blank" rel="noopener" aria-label="Open the evaluation design diagram at full resolution">
+          <img class="publication-full" src="assets/evaluation-design.png" width="1536" height="1024" alt="Panel a: full navigation and pickup evaluation with 100 assigned tasks for each of three methods. Panel b: local pickup evaluation with two pallet slots, three yaw offsets, and three lateral offsets, giving 18 initial states evaluated with four methods." decoding="async" loading="lazy">
+          <div class="publication-mobile">
+            <div class="publication-crop research-crop-a"><img src="assets/evaluation-design.png" width="1536" height="1024" alt="Panel a: 100 navigation-and-pickup tasks per method." decoding="async" loading="lazy"></div>
+            <div class="publication-crop research-crop-b"><img src="assets/evaluation-design.png" width="1536" height="1024" alt="Panel b: 18 prescribed local states, each tested with geometry-guided, pi zero point five, OpenVLA-OFT, and the head-only diagnostic." decoding="async" loading="lazy"></div>
+          </div>
+        </a>
+        <figcaption><strong>a, Full trajectories.</strong> Navigation and pickup are evaluated together. <strong>b, Local capability.</strong> Controlled offsets isolate pickup behavior; the head-only diagnostic is included here. <a href="assets/evaluation-design.png" target="_blank" rel="noopener">View figure ↗</a></figcaption>
+      </figure>
+      <div class="success-definitions">
+        <div class="definition-block">
+          <p class="equation-label">Strict / Complete task</p>
+          <div class="equation"><math display="block" aria-label="Strict success requires pre-lift geometry, load holding, and all applicable task-protocol checks."><msub><mi>S</mi><mtext>strict</mtext></msub><mo>=</mo><msub><mi>G</mi><mtext>pre-lift</mtext></msub><mo>∧</mo><msub><mi>L</mi><mtext>hold</mtext></msub><mo>∧</mo><msub><mi>P</mi><mtext>task</mtext></msub></math></div>
+          <p><strong>Geometry:</strong> each fork at 58–74.2 cm depth, <i>H</i> ≤ 5 cm, and <i>D</i> ≤ 3.5 cm before lift.</p>
+          <p><strong>Load:</strong> during at least 2 s of executed holding, the lowest pallet corner and cargo center remain at least 6 cm above their pickup baselines. The hold uses zero base-motion commands and a fixed fork-height target, with cargo on the pallet and no load–ground contact.</p>
+          <p><strong>Protocol:</strong> physical support, contact, evidence, collision, and time-budget checks; navigation and handoff where applicable.</p>
+        </div>
+        <div class="definition-block">
+          <p class="equation-label">Entry-only / Crossed entrance</p>
+          <div class="equation"><math display="block" aria-label="Entry-only success means that, at some recorded time, both left and right fork insertion depths are greater than zero."><msub><mi>S</mi><mtext>entry</mtext></msub><mo>=</mo><mn>1</mn><mo>[</mo><mo>∃</mo><mi>t</mi><mo>:</mo><msub><mi>d</mi><mi>L</mi></msub><mo>(</mo><mi>t</mi><mo>)</mo><mo>&gt;</mo><mn>0</mn><mo>∧</mo><msub><mi>d</mi><mi>R</mi></msub><mo>(</mo><mi>t</mi><mo>)</mo><mo>&gt;</mo><mn>0</mn><mo>]</mo></math></div>
+          <p>Both fork tips must cross the pallet entrance plane <strong>at the same recorded sample</strong>.</p>
+          <p>This score requires no lift or hold. It measures entry capability independently of the remaining strict task conditions.</p>
+        </div>
+      </div>
+      <div class="evaluation-tables">
+        <div>
+          <table class="research-table outcome-table">
+            <caption><span>N / Full trajectory</span>100 assigned tasks per method</caption>
+            <thead><tr><th scope="col">Method</th><th scope="col">Strict</th><th scope="col">Entry-only</th></tr></thead>
+            <tbody>
+              <tr class="ours-row"><th scope="row">Geometry-guided</th><td><strong>83%</strong><span class="table-detail">83/100</span></td><td><strong>85%</strong><span class="table-detail">85/100</span></td></tr>
+              <tr><th scope="row">π0.5</th><td><strong>29%</strong><span class="table-detail">29/100</span></td><td><strong>67%</strong><span class="table-detail">67/100</span></td></tr>
+              <tr><th scope="row">OpenVLA-OFT</th><td><strong>20%</strong><span class="table-detail">20/100</span></td><td><strong>71%</strong><span class="table-detail">71/100</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <table class="research-table outcome-table">
+            <caption><span>C / Local insertion</span>18 initial states per method</caption>
+            <thead><tr><th scope="col">Method</th><th scope="col">Strict</th><th scope="col">Entry-only</th></tr></thead>
+            <tbody>
+              <tr class="ours-row"><th scope="row">Geometry-guided</th><td><strong>100%</strong><span class="table-detail">18/18</span></td><td><strong>100%</strong><span class="table-detail">18/18</span></td></tr>
+              <tr><th scope="row">π0.5</th><td><strong>16.7%</strong><span class="table-detail">3/18</span></td><td><strong>50%</strong><span class="table-detail">9/18</span></td></tr>
+              <tr><th scope="row">OpenVLA-OFT</th><td><strong>22.2%</strong><span class="table-detail">4/18</span></td><td><strong>72.2%</strong><span class="table-detail">13/18</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="evaluation-notes">
+        <p><strong>Scoring.</strong> Strict results use the current <i>H</i> ≤ 5 cm setting, rescored from the recorded trajectories with the other checks unchanged. Entry-only is computed from those same records.</p>
+        <p><strong>Scope.</strong> Full-trajectory rates retain all 100 assigned tasks, including navigation failures. Local pickup allows reverse motion and repeated entry; the full benchmark retains its original restrictions. The 72 local results comprise 14 certified earlier trajectories and 58 new trajectories.</p>
+      </div>
+    </section>
+    <section class="section section-separated container reading-width" data-section="citation" hidden>
+      <div class="line section-heading" data-slot="citation-title" aria-hidden="true"></div>
+      <div class="citation-slot" data-slot="citation-body" aria-hidden="true"></div>
+    </section>
+  </main>
+  <footer class="site-footer" data-section="footer" hidden>
+    <div class="container"><div class="line footer-slot" data-slot="footer-content" aria-hidden="true"></div></div>
+  </footer>
+  <script>
+    (() => {
+      const video = document.getElementById('demo-video');
+      const buttons = [...document.querySelectorAll('[data-demo-view]')];
+      const status = document.getElementById('demo-view-status');
+      let activeView = 'all';
+      let pendingTime = null;
+      let resumePlayback = false;
+      let playbackRate = 1;
+      video.addEventListener('loadedmetadata', () => {
+        if (pendingTime === null) return;
+        const limit = Number.isFinite(video.duration) ? Math.max(0, video.duration - 0.01) : pendingTime;
+        video.currentTime = Math.min(pendingTime, limit);
+        video.playbackRate = playbackRate;
+        pendingTime = null;
+        if (resumePlayback) video.play().catch(() => {});
+      });
+      document.querySelectorAll('[data-demo-stage]').forEach(frame => frame.addEventListener('click', () => {
+        const value = frame.dataset.demoTime;
+        if (!value || !Number.isFinite(Number(value))) return;
+        const target = Math.max(0, Number(value));
+        if (video.readyState < 1 || pendingTime !== null) {
+          pendingTime = target;
+          resumePlayback = true;
+        } else {
+          video.currentTime = Number.isFinite(video.duration) ? Math.min(target, Math.max(0, video.duration - 0.01)) : target;
+          video.play().catch(() => {});
+        }
+        video.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+      }));
+      buttons.forEach(button => button.addEventListener('click', () => {
+        if (button.dataset.demoView === activeView) return;
+        const isChanging = pendingTime !== null;
+        pendingTime = isChanging ? pendingTime : video.currentTime;
+        resumePlayback = isChanging ? resumePlayback : !video.paused;
+        playbackRate = isChanging ? playbackRate : video.playbackRate;
+        video.pause();
+        activeView = button.dataset.demoView;
+        if (activeView === 'all') video.poster = 'assets/t008-poster.jpg';
+        else video.removeAttribute('poster');
+        buttons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+        video.setAttribute('aria-label', 'T008 demonstration rerun, ' + button.textContent);
+        status.textContent = button.textContent + ' selected.';
+        video.src = button.dataset.videoSrc;
+        video.load();
+      }));
+      if (window.matchMedia('(max-width: 680px)').matches) {
+        buttons.find(button => button.dataset.demoView === 'third').click();
+      }
+    })();
+  </script>
+</body>
+</html>
