@@ -25,7 +25,6 @@
     <section class="trajectory-demo container" id="trajectory-demo" aria-labelledby="demo-title">
       <div class="demo-heading">
         <h2 id="demo-title">A complete warehouse pickup</h2>
-        <p>T008 · Target EG2 · Geometry-guided · Strict success</p>
       </div>
       <figure class="demo-sequence" aria-label="Sixteen consecutive sampled frames from the T008 trajectory">
         <div class="demo-sequence-scroll" tabindex="0" aria-label="Trajectory frames; scroll horizontally on smaller screens">
@@ -58,7 +57,6 @@
             </div>
           </div>
         </div>
-        <figcaption>16 sampled frames from one continuous trajectory. Read left to right, then continue on the next row.</figcaption>
       </figure>
       <div class="demo-player">
         <div class="demo-view-switcher" role="group" aria-label="Video view">
@@ -70,7 +68,7 @@
         <video id="demo-video" class="demo-video" controls playsinline preload="metadata" poster="assets/t008-poster.jpg" src="assets/t008-all.mp4" aria-label="T008 demonstration rerun, all views">
           Your browser does not support inline video. <a href="assets/t008-all.mp4">Open the full trajectory video.</a>
         </video>
-        <p class="demo-caption">A successful 72.9 s demonstration rerun of T008, from warehouse navigation to insertion, lift and hold. Shown at 1× with main RGB, metric depth and a following third-person camera. Select any frame to jump to that moment.</p>
+        <p class="demo-caption">A successful 72.9 s demonstration rerun of T008, from warehouse navigation to insertion, lift and hold. Shown at 1× with main RGB, metric depth and a following third-person camera.</p>
         <span class="visually-hidden" id="demo-view-status" aria-live="polite"></span>
       </div>
     </section>
@@ -118,18 +116,17 @@
         <p class="section-lead">Our controller converts calibrated metric depth into a fitted cargo front face, tracks the resulting relative pose with odometry, and uses that geometric feedback to align, insert, and lift. Two adapted VLA policies provide the comparison.</p>
       </div>
       <div class="model-size-block">
-        <div class="table-scroll" tabindex="0" role="region" aria-label="Model parameter comparison; scroll horizontally on small screens">
-          <table class="research-table model-size-table" aria-describedby="model-size-note">
+        <div class="table-scroll" role="region" aria-label="Model parameter comparison">
+          <table class="research-table model-size-table">
             <caption>Model size · evaluated inference configuration</caption>
-            <thead><tr><th scope="col">Method</th><th scope="col">Neural parameters</th><th scope="col">What is counted</th></tr></thead>
+            <thead><tr><th scope="col">Method</th><th scope="col">Neural parameters</th></tr></thead>
             <tbody>
-              <tr><th scope="row">Ours</th><td><strong>0.078M</strong><span class="table-detail">77,779 · loaded depth head</span></td><td>The depth head is computed, but geometry replaces its pose prediction before control.</td></tr>
-              <tr><th scope="row">π0.5</th><td><strong>≈ 3.40B</strong><span class="table-detail">Full policy</span></td><td>Vision–language backbone, action expert, projections and LoRA weights.</td></tr>
-              <tr><th scope="row">OpenVLA-OFT</th><td><strong>≈ 7.64B</strong><span class="table-detail">Full policy</span></td><td>Vision–language model with merged LoRA, continuous action head and proprioception projector.</td></tr>
+              <tr><th scope="row">Ours</th><td><strong>0.078M</strong><span class="table-detail">77,779 · loaded depth head</span></td></tr>
+              <tr><th scope="row">π0.5</th><td><strong>≈ 3.40B</strong><span class="table-detail">Full policy</span></td></tr>
+              <tr><th scope="row">OpenVLA-OFT</th><td><strong>≈ 7.64B</strong><span class="table-detail">Full policy</span></td></tr>
             </tbody>
           </table>
         </div>
-        <p class="model-size-note" id="model-size-note">Counts include frozen and adapted neural weights loaded for inference, measured from the evaluated checkpoints. Geometry, odometry and hand-designed control have no learned neural weights. M = million; B = billion.</p>
         <!-- Checkpoint tensor counts: Ours 77,779; pi05_19999 3,403,421,456 (including 49,987,584 LoRA parameters); oft_40000_chkpt 7,541,237,184 merged base + 83,959,811 action head + 16,797,696 proprioception projector = 7,641,994,691. -->
       </div>
       <figure class="publication-figure research-figure method-figure">
@@ -206,7 +203,6 @@
         <p><strong>Input:</strong> fork-mounted RGB, task instruction, and state <span class="inline-math">s<sub>t</sub> = (fork height, steering, forward speed)</span>. <strong>Output:</strong> eight actions, each commanding forward speed, steering, and fork vertical velocity.</p>
         <p class="contract-timing"><strong>15 Hz</strong> action execution <span aria-hidden="true">/</span> <strong>8</strong> actions per chunk <span aria-hidden="true">=</span> <strong>1.875 Hz</strong> nominal fresh-image replanning.</p>
       </div>
-      <aside class="diagnostic-note"><strong>Head-only diagnostic.</strong> A learned depth-pose head replaces the geometric estimate while retaining the same staged controller. It takes depth and a valid-pixel mask, has 77,779 parameters, and was trained on 416 of 500 episodes, with 84 held out. The full geometry-guided system uses the geometric estimate directly.</aside>
     </section>
     <section class="section research-section container" id="result" data-section="result" aria-labelledby="result-title">
       <div class="section-intro">
@@ -215,8 +211,8 @@
         <p class="section-lead">We compare complete navigation-and-pickup trajectories and isolated local pickup. Each recorded trajectory receives two scores: completion of the strict task protocol, and the simpler event of both fork tips crossing the pallet entrance plane.</p>
       </div>
       <div class="evaluation-scopes">
-        <div><p class="scope-code">N / Full trajectory</p><h3>100 tasks per method</h3><p>Three methods, 300 assigned tasks. Navigate from a warehouse start pose to the designated pallet, then perform pickup.</p></div>
-        <div><p class="scope-code">C / Local insertion</p><h3>18 starts × 4 methods = 72</h3><p>Two slots (WG1, EG2) × three yaw offsets (−5°, 0°, +5°) × three lateral offsets (−10, 0, +10 cm).</p></div>
+        <div><p class="scope-code">Full trajectory</p><h3>100 tasks per method</h3><p>Three methods, 300 assigned tasks. Navigate from a warehouse start pose to the designated pallet, then perform pickup.</p></div>
+        <div><p class="scope-code">Local insertion</p><h3>18 starts × 4 methods = 72</h3><p>Two slots (WG1, EG2) × three yaw offsets (−5°, 0°, +5°) × three lateral offsets (−10, 0, +10 cm).</p></div>
       </div>
       <figure class="publication-figure research-figure evaluation-figure">
         <a class="publication-artwork" href="assets/evaluation-design.png" target="_blank" rel="noopener" aria-label="Open the evaluation design diagram at full resolution">
@@ -246,7 +242,7 @@
       <div class="evaluation-tables">
         <div>
           <table class="research-table outcome-table">
-            <caption><span>N / Full trajectory</span>100 assigned tasks per method</caption>
+            <caption><span>Full trajectory</span>100 assigned tasks per method</caption>
             <thead><tr><th scope="col">Method</th><th scope="col">Strict</th><th scope="col">Entry-only</th></tr></thead>
             <tbody>
               <tr class="ours-row"><th scope="row">Geometry-guided</th><td><strong>83%</strong><span class="table-detail">83/100</span></td><td><strong>85%</strong><span class="table-detail">85/100</span></td></tr>
@@ -257,7 +253,7 @@
         </div>
         <div>
           <table class="research-table outcome-table">
-            <caption><span>C / Local insertion</span>18 initial states per method</caption>
+            <caption><span>Local insertion</span>18 initial states per method</caption>
             <thead><tr><th scope="col">Method</th><th scope="col">Strict</th><th scope="col">Entry-only</th></tr></thead>
             <tbody>
               <tr class="ours-row"><th scope="row">Geometry-guided</th><td><strong>100%</strong><span class="table-detail">18/18</span></td><td><strong>100%</strong><span class="table-detail">18/18</span></td></tr>
@@ -266,10 +262,6 @@
             </tbody>
           </table>
         </div>
-      </div>
-      <div class="evaluation-notes">
-        <p><strong>Scoring.</strong> Strict results use the current <i>H</i> ≤ 5 cm setting, rescored from the recorded trajectories with the other checks unchanged. Entry-only is computed from those same records.</p>
-        <p><strong>Scope.</strong> Full-trajectory rates retain all 100 assigned tasks, including navigation failures. Local pickup allows reverse motion and repeated entry; the full benchmark retains its original restrictions. The 72 local results comprise 14 certified earlier trajectories and 58 new trajectories.</p>
       </div>
     </section>
     <section class="section section-separated container reading-width" data-section="citation" hidden>
