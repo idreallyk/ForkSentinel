@@ -117,6 +117,21 @@
         <h2 id="method-title">Metric geometry.<br>Staged control.</h2>
         <p class="section-lead">Our controller converts calibrated metric depth into a fitted cargo front face, tracks the resulting relative pose with odometry, and uses that geometric feedback to align, insert, and lift. Two adapted VLA policies provide the comparison.</p>
       </div>
+      <div class="model-size-block">
+        <div class="table-scroll" tabindex="0" role="region" aria-label="Model parameter comparison; scroll horizontally on small screens">
+          <table class="research-table model-size-table" aria-describedby="model-size-note">
+            <caption>Model size · evaluated inference configuration</caption>
+            <thead><tr><th scope="col">Method</th><th scope="col">Neural parameters</th><th scope="col">What is counted</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Ours</th><td><strong>0.078M</strong><span class="table-detail">77,779 · loaded depth head</span></td><td>The depth head is computed, but geometry replaces its pose prediction before control.</td></tr>
+              <tr><th scope="row">π0.5</th><td><strong>≈ 3.40B</strong><span class="table-detail">Full policy</span></td><td>Vision–language backbone, action expert, projections and LoRA weights.</td></tr>
+              <tr><th scope="row">OpenVLA-OFT</th><td><strong>≈ 7.64B</strong><span class="table-detail">Full policy</span></td><td>Vision–language model with merged LoRA, continuous action head and proprioception projector.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="model-size-note" id="model-size-note">Counts include frozen and adapted neural weights loaded for inference, measured from the evaluated checkpoints. Geometry, odometry and hand-designed control have no learned neural weights. M = million; B = billion.</p>
+        <!-- Checkpoint tensor counts: Ours 77,779; pi05_19999 3,403,421,456 (including 49,987,584 LoRA parameters); oft_40000_chkpt 7,541,237,184 merged base + 83,959,811 action head + 16,797,696 proprioception projector = 7,641,994,691. -->
+      </div>
       <figure class="publication-figure research-figure method-figure">
         <a class="publication-artwork" href="assets/method-data.png" target="_blank" rel="noopener" aria-label="Open the geometry-guided control architecture and control geometry at full resolution">
           <img class="publication-full" src="assets/method-data.png" width="1536" height="1024" alt="Panel a: a closed loop from metric depth through backprojection, cargo-face fitting, cargo-center recovery and odometry time alignment to Align, Insert and Lift control. Panel b: top-view geometry shows the cargo center, nominal fork-tip reference and lateral, longitudinal and heading errors." decoding="async" loading="lazy">

@@ -157,6 +157,13 @@ a:focus-visible { outline: 3px solid #64748b; outline-offset: 5px; border-radius
 .research-table th, .research-table td { padding: 16px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
 .research-table thead th { border-top: 1px solid #cfd7db; color: var(--muted); font-size: 11px; font-weight: 600; }
 .research-table tbody th { color: var(--heading); font-weight: 600; }
+.model-size-block { margin-top: 32px; }
+.model-size-table { min-width: 560px; }
+.model-size-table th:first-child, .model-size-table td:first-child { padding-left: 0; }
+.model-size-table th:nth-child(1) { width: 20%; }
+.model-size-table th:nth-child(2) { width: 27%; }
+.model-size-table td strong { color: var(--heading); font-weight: 600; font-variant-numeric: tabular-nums; }
+.model-size-note { margin: 14px 0 0; color: var(--muted); font-size: 12px; line-height: 1.85; }
 .training-table { min-width: 650px; }
 .training-table th:first-child, .training-table td:first-child { padding-left: 0; }
 .training-table th:nth-child(1) { width: 15%; }
