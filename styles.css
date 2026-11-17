@@ -51,6 +51,21 @@ a:focus-visible { outline: 3px solid #64748b; outline-offset: 5px; border-radius
 }
 .overview-section, .task-section { border-top: 1px solid var(--border); padding-block: 64px 76px; }
 .overview-summary { margin: 16px 0 0; font-size: 17px; line-height: 1.8; }
+.plain-figure img, .figure-svg { display: block; width: 100%; height: auto; }
+.plain-figure img { border-radius: 6px; }
+.figure-svg { font-family: Inter, "Segoe UI", Arial, sans-serif; }
+.figure-svg .pl-box { fill: var(--surface); stroke: var(--border); }
+.figure-svg .pl-strong { fill: #eef1f4; stroke: #c9d2d9; }
+.figure-svg .pl-title { fill: var(--heading); font-size: 14px; font-weight: 600; }
+.figure-svg .pl-text { fill: var(--muted); font-size: 12px; }
+.figure-svg .pl-label { fill: var(--text); font-size: 11px; font-weight: 700; letter-spacing: .06em; }
+.figure-svg .pl-arrow { stroke: var(--muted); stroke-width: 1.4; }
+.figure-svg .hm-title { fill: var(--heading); font-size: 14px; font-weight: 600; }
+.figure-svg .hm-axis { fill: var(--muted); font-size: 11px; }
+.figure-svg .hm-cell { font-size: 13px; font-weight: 600; }
+.svg-scroll { overflow-x: auto; }
+@media (max-width: 720px) { .svg-scroll .figure-svg { min-width: 680px; } }
+#earlier { border-top: 1px solid var(--border); margin-top: 40px; }
 .project-authors { margin: 18px auto 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
 .section-intro { max-width: 860px; }
 .eyebrow { margin: 0 0 18px; color: var(--text); font-size: 13px; font-weight: 600; line-height: 1.5; letter-spacing: 0.02em; }

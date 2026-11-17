@@ -13,7 +13,7 @@
     <div class="container navigation-shell">
       <a class="wordmark" href="#project-title">ForkSentinel<span aria-hidden="true">.</span></a>
       <nav class="page-navigation" aria-label="Project navigation">
-        <a href="#overview">Overview</a><a href="#task">Task</a><a href="#method">Method</a><a href="#result">Result</a><a href="#learning">Learning</a>
+        <a href="#overview">Overview</a><a href="#task">Task</a><a href="#method">Method</a><a href="#result">Result</a><a href="#earlier">Earlier study</a>
       </nav>
     </div>
   </header>
@@ -22,6 +22,120 @@
       <h1 class="project-title" id="project-title" data-slot="title">ForkSentinel</h1>
       <p class="project-subtitle" data-slot="subtitle">Perception-Guided Autonomous Forklift Control<br class="subtitle-break"> and Capability Evaluation</p>
       <p class="project-authors">Xingkai Deng · Fudan University</p>
+    </section>
+    <section class="overview-section container" id="overview" data-section="overview" aria-labelledby="overview-title">
+      <div class="section-intro">
+        <p class="eyebrow">Overview</p>
+        <h2 id="overview-title">A learned policy<br>for forklift pallet pickup.</h2>
+        <p class="section-lead">ForkSentinel learns to align a forklift with a pallet, insert both forks and lift the load, from masked depth images alone. A compact visuomotor policy is distilled from a privileged teacher by behavior cloning and DAgger, then fine-tuned with PPO.</p>
+        <p class="overview-summary">On 144 unseen procedurally generated scenes the policy reaches <strong>98.6%</strong> strict success within 120 s, matching its teacher (99.3%). Under depth-camera noise, and with Grounded SAM 2 replacing ground-truth masks, it stays ahead of a geometric controller (58.3% vs. 41.7%).</p>
+        <p class="overview-summary">An <a href="#earlier">earlier study</a> on this page compares a geometry-guided controller with fine-tuned π0.5 and OpenVLA-OFT on full navigation-and-pickup trajectories.</p>
+      </div>
+      <figure class="publication-figure plain-figure">
+        <img src="assets/procedural-scenes.jpg" width="1616" height="458" alt="Four procedurally generated warehouse scenes. Top row: overview of the forklift facing a rack. Bottom row: the fork-mounted camera view of the target pallet between its neighbours." decoding="async" loading="lazy">
+        <figcaption><strong>Procedural scenes.</strong> Rack layout, floor, lighting, neighbouring pallets and cargo vary by seed. Top, overview. Bottom, the fork-mounted camera view the policy acts from.</figcaption>
+      </figure>
+    </section>
+    <section class="task-section container" id="task" data-section="task" aria-labelledby="task-title">
+      <div class="section-intro">
+        <p class="eyebrow">Task</p>
+        <h2 id="task-title">From a perturbed start pose<br>to a held load.</h2>
+        <p class="section-lead">The forklift starts in front of a ground-level rack slot with a lateral offset of up to about half a metre and a yaw error of more than 10°. It must align, insert both forks into the pallet pockets, lift, and hold. One attempt per scene; no resets.</p>
+      </div>
+      <div class="success-definitions">
+        <div class="definition-block">
+          <p class="equation-label">Strict success</p>
+          <div class="equation"><math display="block" aria-label="Strict success requires both forks within the depth window, hole error at most 20 millimetres, a held lift, and the protocol checks."><msub><mi>S</mi><mtext>strict</mtext></msub><mo>=</mo><mo>[</mo><mn>0.58</mn><mo>≤</mo><msub><mi>d</mi><mi>L</mi></msub><mo>,</mo><msub><mi>d</mi><mi>R</mi></msub><mo>≤</mo><mn>0.742</mn><mspace width="0.25em"></mspace><mtext>m</mtext><mo>]</mo><mo>∧</mo><mo>[</mo><msub><mi>e</mi><mtext>hole</mtext></msub><mo>≤</mo><mn>20</mn><mspace width="0.25em"></mspace><mtext>mm</mtext><mo>]</mo><mo>∧</mo><msub><mi>L</mi><mtext>hold</mtext></msub><mo>∧</mo><msub><mi>P</mi><mtext>task</mtext></msub></math></div>
+          <p><strong>Insertion depth:</strong> each fork lies 58–74.2 cm inside the 80.2 cm-deep pallet at the last sample before lift.</p>
+          <p><strong>Hole error:</strong> the larger of the two fork-tip lateral errors, each measured against its own pocket centre, is at most <strong>20 mm</strong>. The earlier study on this page used 5 cm.</p>
+          <p><strong>Load:</strong> the pallet and cargo stay lifted for at least 2 s with zero base motion, cargo on the pallet and nothing touching the ground.</p>
+          <p><strong>Protocol:</strong> no collision with the rack or neighbouring loads, complete evidence, and completion within the time budget. We report two budgets, <strong>60 s</strong> and <strong>120 s</strong>, from the same run.</p>
+        </div>
+      </div>
+    </section>
+    <section class="section research-section container" id="method" data-section="method" aria-labelledby="method-title">
+      <div class="section-intro">
+        <p class="eyebrow">Method</p>
+        <h2 id="method-title">Teacher, student,<br>and three training stages.</h2>
+        <p class="section-lead">A teacher with access to the simulator state shows how to do the task. The student never sees that state: it learns to reproduce the teacher from what a fork-mounted depth camera can see.</p>
+      </div>
+      <figure class="publication-figure plain-figure"><div class="svg-scroll" tabindex="0"><svg class="figure-svg" viewBox="0 0 1000 330" role="img" aria-label="Training pipeline. A privileged teacher produces demonstrations. The student is trained by behavior cloning, corrected by DAgger, and fine-tuned with PPO using an asymmetric critic. At deployment the student sees only masked depth and fork height."><defs><marker id="pl-head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#64748b"></path></marker></defs><text x="0" y="16" class="pl-label">TRAINING</text><rect x="0" y="28" width="220" height="104" rx="8" class="pl-box"></rect><text x="14" y="52" class="pl-title">Privileged teacher</text><text x="14" y="72" class="pl-text">Simulator-state pose</text><text x="14" y="89" class="pl-text">Alignment law + re-approach</text><text x="14" y="106" class="pl-text">300 strict-success demos</text><line x1="220" y1="80" x2="258" y2="80" class="pl-arrow" marker-end="url(#pl-head)"></line><rect x="260" y="28" width="210" height="104" rx="8" class="pl-box"></rect><text x="274" y="52" class="pl-title">1 · Behavior cloning</text><text x="274" y="72" class="pl-text">157,061 decision frames</text><text x="274" y="89" class="pl-text">Mask augmentation</text><text x="274" y="106" class="pl-text">30 epochs, AdamW</text><line x1="470" y1="80" x2="508" y2="80" class="pl-arrow" marker-end="url(#pl-head)"></line><rect x="510" y="28" width="220" height="104" rx="8" class="pl-box"></rect><text x="524" y="52" class="pl-title">2 · DAgger</text><text x="524" y="72" class="pl-text">Student drives 60 new scenes</text><text x="524" y="89" class="pl-text">Teacher labels every state</text><text x="524" y="106" class="pl-text">5 rounds, 300 episodes</text><line x1="730" y1="80" x2="768" y2="80" class="pl-arrow" marker-end="url(#pl-head)"></line><rect x="770" y="28" width="230" height="104" rx="8" class="pl-box"></rect><text x="784" y="52" class="pl-title">3 · PPO fine-tuning</text><text x="784" y="72" class="pl-text">Sparse strict-success reward</text><text x="784" y="89" class="pl-text">Critic reads simulator state</text><text x="784" y="106" class="pl-text">BC term annealed 1.0 → 0.3</text><text x="0" y="186" class="pl-label">DEPLOYMENT</text><rect x="0" y="198" width="260" height="104" rx="8" class="pl-box"></rect><text x="14" y="222" class="pl-title">Observation</text><text x="14" y="242" class="pl-text">4 frames of masked depth, 72 × 128</text><text x="14" y="259" class="pl-text">Pallet and cargo masks</text><text x="14" y="276" class="pl-text">Fork height</text><line x1="260" y1="250" x2="298" y2="250" class="pl-arrow" marker-end="url(#pl-head)"></line><rect x="300" y="198" width="300" height="104" rx="8" class="pl-box pl-strong"></rect><text x="314" y="222" class="pl-title">Student policy · 1.63M parameters</text><text x="314" y="242" class="pl-text">5 strided convolutions → 256</text><text x="314" y="259" class="pl-text">MLP 512 → 256</text><text x="314" y="276" class="pl-text">No pose, map or steering feedback</text><line x1="600" y1="250" x2="638" y2="250" class="pl-arrow" marker-end="url(#pl-head)"></line><rect x="640" y="198" width="360" height="104" rx="8" class="pl-box"></rect><text x="654" y="222" class="pl-title">Action at 15 Hz</text><text x="654" y="242" class="pl-text">Forward speed, steering angle</text><text x="654" y="259" class="pl-text">Lift trigger → scripted lift and hold</text><text x="654" y="276" class="pl-text">Strict scoring after a 2 s hold</text></svg></div>
+        <figcaption><strong>Training and deployment.</strong> Privileged information is used only by the teacher and the PPO critic. The deployed policy reads masked depth and fork height.</figcaption>
+      </figure>
+      <div class="method-equations">
+        <div class="equation-block">
+          <p class="equation-label">Observation</p>
+          <div class="equation"><math display="block" aria-label="The observation is the last four masked depth frames and the fork height. Masked depth is the depth image multiplied by the target mask and divided by four metres."><msub><mi>o</mi><mi>t</mi></msub><mo>=</mo><mo>(</mo><msub><mover><mi>D</mi><mo>~</mo></mover><mrow><mi>t</mi><mo>−</mo><mn>3</mn><mo>:</mo><mi>t</mi></mrow></msub><mo>,</mo><msub><mi>h</mi><mi>t</mi></msub><mo>)</mo><mspace width="1.6em"></mspace><mover><mi>D</mi><mo>~</mo></mover><mo>=</mo><mi>M</mi><mo>⊙</mo><mi>D</mi><mo>/</mo><mn>4</mn><mspace width="0.25em"></mspace><mtext>m</mtext></math></div>
+          <p>Depth <i>D</i> is kept only on pixels of the target pallet and target cargo (mask <i>M</i>), downsampled to 72 × 128 and stacked over the last four 15 Hz frames, with two image-coordinate channels. The only proprioceptive input is the fork height <i>h</i>. Masks come from simulator labels during training and from Grounded SAM 2 in the noise evaluation.</p>
+        </div>
+        <div class="equation-block">
+          <p class="equation-label">Action</p>
+          <div class="equation"><math display="block" aria-label="Speed and steering are the scaled hyperbolic tangent of the network mean. Lifting starts when the sigmoid of the lift logit exceeds one half."><mo>(</mo><msub><mi>v</mi><mi>t</mi></msub><mo>,</mo><msub><mi>δ</mi><mi>t</mi></msub><mo>)</mo><mo>=</mo><mo>(</mo><mn>0.25</mn><mo>,</mo><mn>1.0</mn><mo>)</mo><mo>⊙</mo><mi>tanh</mi><msub><mi>μ</mi><mi>θ</mi></msub><mo>(</mo><msub><mi>o</mi><mi>t</mi></msub><mo>)</mo><mspace width="1.6em"></mspace><mtext>lift when</mtext><mspace width="0.35em"></mspace><mi>σ</mi><mo>(</mo><msub><mi>ℓ</mi><mi>θ</mi></msub><mo>(</mo><msub><mi>o</mi><mi>t</mi></msub><mo>)</mo><mo>)</mo><mo>&gt;</mo><mn>0.5</mn></math></div>
+          <p>The network outputs forward speed (scaled to ±0.25 m/s), steering angle (±1 rad) and a lift logit. Once the lift trigger fires, the same scripted lift-and-hold routine as the teacher runs.</p>
+        </div>
+        <div class="equation-block">
+          <p class="equation-label">Privileged teacher</p>
+          <div class="equation"><math display="block" aria-label="The teacher steers with gain 24 on lateral error and minus 8 on yaw error, at 0.15 metres per second."><msup><mi>δ</mi><mo>*</mo></msup><mo>=</mo><mn>24</mn><msub><mi>e</mi><mtext>lat</mtext></msub><mo>−</mo><mn>8</mn><msub><mi>e</mi><mtext>yaw</mtext></msub><mspace width="1.6em"></mspace><msup><mi>v</mi><mo>*</mo></msup><mo>=</mo><mn>0.15</mn><mspace width="0.25em"></mspace><mtext>m/s</mtext></math></div>
+          <p>Lateral and yaw errors are measured from the true pallet pose. Insertion starts only when |<i>e</i><sub>lat</sub>| ≤ 2 cm and |<i>e</i><sub>yaw</sub>| ≤ 7° at the approach endpoint; otherwise the teacher reverses to 2.0 m and approaches again, up to three times. Each re-approach costs about 25 s.</p>
+        </div>
+        <div class="equation-block">
+          <p class="equation-label">Stage 1 · Behavior cloning</p>
+          <div class="equation"><math display="block" aria-label="The behavior cloning loss is a smooth L1 loss on actions plus 0.1 times a weighted binary cross-entropy on the lift trigger."><msub><mi>L</mi><mtext>BC</mtext></msub><mo>=</mo><mtext>SmoothL1</mtext><mo>(</mo><msub><mi>a</mi><mi>θ</mi></msub><mo>,</mo><msup><mi>a</mi><mo>*</mo></msup><mo>)</mo><mo>+</mo><mn>0.1</mn><mo>·</mo><msub><mtext>BCE</mtext><mi>w</mi></msub><mo>(</mo><msub><mi>ℓ</mi><mi>θ</mi></msub><mo>,</mo><msup><mi>y</mi><mtext>lift</mtext></msup><mo>)</mo></math></div>
+          <p>300 strict-success demonstrations, 157,061 decision frames. The lift label is positive on the last two frames before the teacher lifts. Masks are dilated, eroded and dropped at random during training.</p>
+        </div>
+        <div class="equation-block">
+          <p class="equation-label">Stage 2 · DAgger</p>
+          <div class="equation"><math display="block" aria-label="Each DAgger round adds teacher labels on the states visited by the current student."><msub><mi>D</mi><mrow><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>D</mi><mi>k</mi></msub><mo>∪</mo><mo>{</mo><mo>(</mo><msub><mi>o</mi><mi>t</mi></msub><mo>,</mo><msup><mi>π</mi><mo>*</mo></msup><mo>(</mo><msub><mi>s</mi><mi>t</mi></msub><mo>)</mo><mo>)</mo><mo>:</mo><msub><mi>o</mi><mi>t</mi></msub><mo>∼</mo><msub><mi>π</mi><msub><mi>θ</mi><mi>k</mi></msub></msub><mo>}</mo></math></div>
+          <p>The student drives 60 new scenes per round while the teacher labels every visited state; the policy is retrained from scratch on all data. Five rounds add 300 episodes. The mean steering gap between student and teacher on visited states falls from 0.135 to 0.032 rad.</p>
+        </div>
+        <div class="equation-block">
+          <p class="equation-label">Stage 3 · PPO fine-tuning</p>
+          <div class="equation"><math display="block" aria-label="Each decision costs 0.01. The final reward is 10 plus a precision bonus on strict success, and minus 5 otherwise."><msub><mi>r</mi><mi>t</mi></msub><mo>=</mo><mo>−</mo><mn>0.01</mn><mspace width="1.6em"></mspace><msub><mi>r</mi><mi>T</mi></msub><mo>=</mo><mrow><mo>{</mo><mtable columnalign="left left"><mtr><mtd><mrow><mn>10</mn><mo>+</mo><mn>2</mn><mo>·</mo><mi>max</mi><mo>(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>−</mo><msub><mi>e</mi><mtext>hole</mtext></msub><mo>/</mo><mn>20</mn><mspace width="0.25em"></mspace><mtext>mm</mtext><mo>)</mo></mrow></mtd><mtd><mtext>strict success</mtext></mtd></mtr><mtr><mtd><mo>−</mo><mn>5</mn></mtd><mtd><mtext>otherwise</mtext></mtd></mtr></mtable></mrow></math></div>
+          <div class="equation"><math display="block" aria-label="The fine-tuning objective is the clipped PPO loss plus a behavior cloning term whose coefficient decays from 1.0 to 0.3."><mi>L</mi><mo>=</mo><msub><mi>L</mi><mtext>clip</mtext></msub><mo>(</mo><mi>θ</mi><mo>)</mo><mo>+</mo><msub><mi>c</mi><mtext>BC</mtext></msub><msub><mi>L</mi><mtext>BC</mtext></msub><mo>(</mo><mi>θ</mi><mo>)</mo><mspace width="1.6em"></mspace><msub><mi>c</mi><mtext>BC</mtext></msub><mo>:</mo><mn>1.0</mn><mo>→</mo><mn>0.3</mn></math></div>
+          <p>Speed and steering are sampled from a Gaussian around the policy mean; lifting stays deterministic. The critic is a 256 × 256 MLP on simulator-state alignment errors, used only in training. γ = 0.998, λ = 0.95, clip 0.2, 32 scenes per iteration (half with lateral offset above 250 mm), 16 iterations, early stop at KL 0.03.</p>
+        </div>
+      </div>
+      <div class="data-intro editorial-row">
+        <div><p class="eyebrow">Finding 1</p><h3>Offline error<br>did not predict closed-loop success.</h3></div>
+        <div class="editorial-copy"><p>A first student that also received measured steering and speed reached near-zero offline action error but failed every closed-loop trial <strong>(0/8)</strong>. It had learned to repeat its previous command: forcing the measured steering to ±1 moved its output to ±0.99, and blanking the image barely changed its error.</p><p>Keeping only fork height as proprioception raised the offline steering error tenfold and closed-loop success to <strong>26/30</strong>.</p></div>
+      </div>
+      <div class="data-intro editorial-row">
+        <div><p class="eyebrow">Finding 2</p><h3>The teacher<br>sets the ceiling.</h3></div>
+        <div class="editorial-copy"><p>After DAgger the student succeeds on every training scene the teacher solves (224/224) and on almost none it does not (3/63). PPO fine-tuning left held-out behavior unchanged (27/30 before and after, the same three scenes failing).</p><p>The remaining failures are scenes with large initial offsets where the teacher itself needs three or more re-approaches and runs out of time. With no successful episode there, the sparse reward gives PPO nothing to climb.</p></div>
+      </div>
+    </section>
+    <section class="section research-section container" id="result" data-section="result" aria-labelledby="result-title">
+      <div class="section-intro">
+        <p class="eyebrow">Result</p>
+        <h2 id="result-title">A stratified benchmark,<br>with and without sensor noise.</h2>
+        <p class="section-lead">Earlier test sets were too easy to separate methods, and a single success rate mixed three different failures: not precise enough, not fast enough, and not feasible. The benchmark below stratifies scenes by initial error and reports two time budgets.</p>
+      </div>
+      <div class="evaluation-scopes">
+        <div><p class="scope-code">Scenes</p><h3>12 strata × 12 scenes = 144</h3><p>Four bands of initial lateral offset (0–100, 100–250, 250–400, ≥ 400 mm) × three bands of yaw (0–5°, 5–10°, ≥ 10°), half near and half far. Seeds are disjoint from all training and development scenes and taken in order, not hand-picked.</p></div>
+        <div><p class="scope-code">Statistics</p><h3>Paired, per scene</h3><p>Every method runs each scene once. Success rates carry Wilson 95% intervals; methods are compared scene by scene with an exact McNemar test.</p></div>
+      </div>
+      <div class="evaluation-tables">
+        <div><table class="research-table outcome-table"><caption><span>No noise</span>144 scenes · strict success</caption><thead><tr><th scope="col">Method</th><th scope="col">60 s</th><th scope="col">120 s</th></tr></thead><tbody><tr><th scope="row">Privileged teacher</th><td><strong>66.7%</strong><span class="table-detail">96/144</span></td><td><strong>99.3%</strong><span class="table-detail">143/144</span></td></tr><tr class="ours-row"><th scope="row">Learned student</th><td><strong>68.1%</strong><span class="table-detail">98/144</span></td><td><strong>98.6%</strong><span class="table-detail">142/144</span></td></tr><tr><th scope="row">Geometric controller</th><td><strong>70.1%</strong><span class="table-detail">101/144</span></td><td><strong>95.8%</strong><span class="table-detail">138/144</span></td></tr></tbody></table></div>
+        <div><table class="research-table outcome-table"><caption><span>Nominal sensor noise</span>144 scenes · Grounded SAM 2 masks</caption><thead><tr><th scope="col">Method</th><th scope="col">60 s</th><th scope="col">120 s</th></tr></thead><tbody><tr class="ours-row"><th scope="row">Learned student</th><td><strong>43.8%</strong><span class="table-detail">63/144</span></td><td><strong>58.3%</strong><span class="table-detail">84/144</span></td></tr><tr><th scope="row">Geometric controller</th><td><strong>31.2%</strong><span class="table-detail">45/144</span></td><td><strong>41.7%</strong><span class="table-detail">60/144</span></td></tr></tbody></table></div>
+      </div>
+      <figure class="publication-figure plain-figure"><div class="svg-scroll" tabindex="0"><svg class="figure-svg" viewBox="0 0 760 232" role="img" aria-label="Student strict successes per difficulty stratum within 60 and 120 seconds. Within 60 seconds success falls as lateral offset and yaw grow; within 120 seconds nearly every stratum is complete."><text x="62" y="90" text-anchor="end" class="hm-axis">0–5°</text><text x="62" y="136" text-anchor="end" class="hm-axis">5–10°</text><text x="62" y="182" text-anchor="end" class="hm-axis">≥ 10°</text><text x="220" y="22" text-anchor="middle" class="hm-title">Within 60 s</text><text x="109.0" y="50" text-anchor="middle" class="hm-axis">0–100</text><text x="183.0" y="50" text-anchor="middle" class="hm-axis">100–250</text><text x="257.0" y="50" text-anchor="middle" class="hm-axis">250–400</text><text x="331.0" y="50" text-anchor="middle" class="hm-axis">≥ 400</text><rect x="74" y="64" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.85"></rect><text x="109.0" y="90.0" text-anchor="middle" class="hm-cell" fill="#ffffff">11/12</text><rect x="148" y="64" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.92"></rect><text x="183.0" y="90.0" text-anchor="middle" class="hm-cell" fill="#ffffff">12/12</text><rect x="222" y="64" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.85"></rect><text x="257.0" y="90.0" text-anchor="middle" class="hm-cell" fill="#ffffff">11/12</text><rect x="296" y="64" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.78"></rect><text x="331.0" y="90.0" text-anchor="middle" class="hm-cell" fill="#ffffff">10/12</text><rect x="74" y="110" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.92"></rect><text x="109.0" y="136.0" text-anchor="middle" class="hm-cell" fill="#ffffff">12/12</text><rect x="148" y="110" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.92"></rect><text x="183.0" y="136.0" text-anchor="middle" class="hm-cell" fill="#ffffff">12/12</text><rect x="222" y="110" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.63"></rect><text x="257.0" y="136.0" text-anchor="middle" class="hm-cell" fill="#ffffff">8/12</text><rect x="296" y="110" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.20"></rect><text x="331.0" y="136.0" text-anchor="middle" class="hm-cell" fill="#142d42">2/12</text><rect x="74" y="156" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.92"></rect><text x="109.0" y="182.0" text-anchor="middle" class="hm-cell" fill="#ffffff">12/12</text><rect x="148" y="156" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.49"></rect><text x="183.0" y="182.0" text-anchor="middle" class="hm-cell" fill="#142d42">6/12</text><rect x="222" y="156" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.20"></rect><text x="257.0" y="182.0" text-anchor="middle" class="hm-cell" fill="#142d42">2/12</text><rect x="296" y="156" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.06"></rect><text x="331.0" y="182.0" text-anchor="middle" class="hm-cell" fill="#142d42">0/12</text><text x="588" y="22" text-anchor="middle" class="hm-title">Within 120 s</text><text x="477.0" y="50" text-anchor="middle" class="hm-axis">0–100</text><text x="551.0" y="50" text-anchor="middle" class="hm-axis">100–250</text><text x="625.0" y="50" text-anchor="middle" class="hm-axis">250–400</text><text x="699.0" y="50" text-anchor="middle" class="hm-axis">≥ 400</text><rect x="442" y="64" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.85"></rect><text x="477.0" y="90.0" text-anchor="middle" class="hm-cell" fill="#ffffff">11/12</text><rect x="516" y="64" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.92"></rect><text x="551.0" y="90.0" text-anchor="middle" class="hm-cell" fill="#ffffff">12/12</text><rect x="590" y="64" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.92"></rect><text x="625.0" y="90.0" text-anchor="middle" class="hm-cell" fill="#ffffff">12/12</text><rect x="664" y="64" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.92"></rect><text x="699.0" y="90.0" text-anchor="middle" class="hm-cell" fill="#ffffff">12/12</text><rect x="442" y="110" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.92"></rect><text x="477.0" y="136.0" text-anchor="middle" class="hm-cell" fill="#ffffff">12/12</text><rect x="516" y="110" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.92"></rect><text x="551.0" y="136.0" text-anchor="middle" class="hm-cell" fill="#ffffff">12/12</text><rect x="590" y="110" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.92"></rect><text x="625.0" y="136.0" text-anchor="middle" class="hm-cell" fill="#ffffff">12/12</text><rect x="664" y="110" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.92"></rect><text x="699.0" y="136.0" text-anchor="middle" class="hm-cell" fill="#ffffff">12/12</text><rect x="442" y="156" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.92"></rect><text x="477.0" y="182.0" text-anchor="middle" class="hm-cell" fill="#ffffff">12/12</text><rect x="516" y="156" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.92"></rect><text x="551.0" y="182.0" text-anchor="middle" class="hm-cell" fill="#ffffff">12/12</text><rect x="590" y="156" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.92"></rect><text x="625.0" y="182.0" text-anchor="middle" class="hm-cell" fill="#ffffff">12/12</text><rect x="664" y="156" width="70" height="42" rx="4" fill="#142d42" fill-opacity="0.92"></rect><text x="699.0" y="182.0" text-anchor="middle" class="hm-cell" fill="#ffffff">11/12</text><text x="220" y="222" text-anchor="middle" class="hm-axis">initial lateral offset (mm)</text><text x="588" y="222" text-anchor="middle" class="hm-axis">initial lateral offset (mm)</text><text x="430" y="90" text-anchor="end" class="hm-axis">0–5°</text><text x="430" y="136" text-anchor="end" class="hm-axis">5–10°</text><text x="430" y="182" text-anchor="end" class="hm-axis">≥ 10°</text></svg></div>
+        <figcaption><strong>Learned student by stratum, no noise.</strong> Rows are initial yaw, columns initial lateral offset. Within 60 s the hard strata measure speed: they need several 25 s re-approaches. Within 120 s only two scenes fail, one of them infeasible for every method because the rack beam blocks the lift.</figcaption>
+      </figure>
+      <div class="data-intro editorial-row">
+        <div><p class="eyebrow">Without noise</p><h3>Student, teacher and geometry<br>are indistinguishable.</h3></div>
+        <div class="editorial-copy"><p>The student matches its teacher (McNemar <i>p</i> = 1.0 at 120 s) with a median hole error of 10.2 mm. The geometric controller here fits the pallet front face in depth and uses the teacher's control law; it is also statistically tied (<i>p</i> = 0.22). The original geometric controller from the earlier study, built for one warehouse, solves 3 of 144 scenes.</p></div>
+      </div>
+      <div class="data-intro editorial-row">
+        <div><p class="eyebrow">With noise</p><h3>Ahead under depth noise.<br>Not yet robust.</h3></div>
+        <div class="editorial-copy"><p>Noise levels follow a D435-class stereo model (14 mm depth noise at 2 m), 1% block dropout, 0.5° / 2.5 mm camera extrinsic error applied by physically moving the camera, ±8 mm fork mounting error and 33 ms actuation delay. Neither method was retrained. The student is ahead at both budgets (<i>p</i> = 0.005 and <i>p</i> &lt; 0.001).</p><p>The advantage comes almost entirely from depth noise: with depth noise alone at stress level, 95.8% vs. 27.1%. Camera and fork mounting errors each cut both methods below one half, and success under nominal noise is still only 58.3%. Without noise, Grounded SAM 2 masks cost little: 96.5% (139/144).</p></div>
+      </div>
+    </section>
+    <section class="overview-section container" id="earlier" data-section="earlier" aria-labelledby="earlier-title">
+      <div class="section-intro">
+        <p class="eyebrow">Earlier study</p>
+        <h2 id="earlier-title">Geometry-guided control<br>versus fine-tuned VLA policies.</h2>
+        <p class="section-lead">Before the learned policy, we built a geometry-guided controller and compared it with π0.5 and OpenVLA-OFT, both adapted from the same expert demonstrations, on complete trajectories from warehouse navigation to pickup. The sections below describe that study. It uses one warehouse scene and a 5 cm fork-to-pocket limit, so its numbers are not comparable with the benchmark above.</p>
+      </div>
     </section>
     <section class="trajectory-demo container" id="trajectory-demo" aria-labelledby="demo-title">
       <div class="demo-heading">
@@ -73,19 +187,10 @@
         <span class="visually-hidden" id="demo-view-status" aria-live="polite"></span>
       </div>
     </section>
-    <section class="overview-section container" id="overview" data-section="overview" aria-labelledby="overview-title">
-      <div class="section-intro">
-        <p class="eyebrow">Overview</p>
-        <h2 id="overview-title">Geometry-guided forklift pickup.</h2>
-        <p class="section-lead">ForkSentinel combines metric 3D perception with staged control for autonomous forklift pickup. We evaluate the complete trajectory from warehouse navigation to insertion and load verification, alongside π0.5 and OpenVLA-OFT adapted from shared expert demonstrations.</p>
-        <p class="overview-summary">Two evaluations separate full-trajectory performance from local insertion capability. Both report strict task completion and fork entry.</p>
-        <p class="overview-summary">A second line of work replaces the hand-designed controller with a learned one: a compact visuomotor policy trained by behavior cloning, DAgger and PPO from a privileged teacher, evaluated on a 144-scene stratified benchmark. See <a href="#learning">Learning</a>.</p>
-      </div>
-    </section>
-    <section class="task-section container" id="task" data-section="task" aria-labelledby="task-title">
+    <section class="task-section container" id="vla-task" data-section="vla-task" aria-labelledby="vla-task-title">
       <div class="section-intro">
         <p class="eyebrow">Task</p>
-        <h2 id="task-title">From a warehouse start pose<br>to a precise insertion.</h2>
+        <h2 id="vla-task-title">From a warehouse start pose<br>to a precise insertion.</h2>
         <p class="section-lead">Starting from a valid pose anywhere in the warehouse, the forklift must navigate to a designated rack, align with the target pallet, and insert both forks. The evaluated trajectory also includes a lifting-and-holding check to verify load handling.</p>
       </div>
       <figure class="publication-figure" id="success">
@@ -111,10 +216,10 @@
         </figcaption>
       </figure>
     </section>
-    <section class="section research-section container" id="method" data-section="method" aria-labelledby="method-title">
+    <section class="section research-section container" id="vla-method" data-section="vla-method" aria-labelledby="vla-method-title">
       <div class="section-intro">
         <p class="eyebrow">Method</p>
-        <h2 id="method-title">Metric geometry.<br>Staged control.</h2>
+        <h2 id="vla-method-title">Metric geometry.<br>Staged control.</h2>
         <p class="section-lead">Our controller converts calibrated metric depth into a fitted cargo front face, tracks the resulting relative pose with odometry, and uses that geometric feedback to align, insert, and lift. Two adapted VLA policies provide the comparison.</p>
       </div>
       <div class="model-size-block">
@@ -206,10 +311,10 @@
         <p class="contract-timing"><strong>15 Hz</strong> action execution <span aria-hidden="true">/</span> <strong>8</strong> actions per chunk <span aria-hidden="true">=</span> <strong>1.875 Hz</strong> nominal fresh-image replanning.</p>
       </div>
     </section>
-    <section class="section research-section container" id="result" data-section="result" aria-labelledby="result-title">
+    <section class="section research-section container" id="vla-result" data-section="vla-result" aria-labelledby="vla-result-title">
       <div class="section-intro">
         <p class="eyebrow">Result</p>
-        <h2 id="result-title">Two evaluations.<br>Two definitions of success.</h2>
+        <h2 id="vla-result-title">Two evaluations.<br>Two definitions of success.</h2>
         <p class="section-lead">We compare complete navigation-and-pickup trajectories and isolated local pickup. Each recorded trajectory receives two scores: completion of the strict task protocol, and the simpler event of both fork tips crossing the pallet entrance plane.</p>
       </div>
       <div class="evaluation-scopes">
@@ -264,62 +369,6 @@
             </tbody>
           </table>
         </div>
-      </div>
-    </section>
-    <section class="section research-section container" id="learning" data-section="learning" aria-labelledby="learning-title">
-      <div class="section-intro">
-        <p class="eyebrow">Learning</p>
-        <h2 id="learning-title">A learned policy<br>from a privileged teacher.</h2>
-        <p class="section-lead">The local pickup stage is also learned end to end. A privileged teacher with simulator-state access drives; a student that sees only masked depth and fork height imitates it, is corrected with DAgger, and is then fine-tuned with PPO. The student steers and decides when to lift; the lift itself is the same scripted routine the teacher uses.</p>
-      </div>
-      <div class="training-flow" role="group" aria-label="Teacher demonstrations, behavior cloning, DAgger and PPO fine-tuning produce the student policy">
-        <div class="training-flow-node"><strong>Privileged teacher</strong><span>300 strict-success demonstrations</span></div>
-        <span class="flow-arrow" aria-hidden="true">→</span>
-        <div class="training-flow-policies">
-          <div class="training-flow-node"><strong>Behavior cloning</strong><span>157,061 decision frames</span></div>
-          <div class="training-flow-node"><strong>DAgger</strong><span>5 rounds × 60 scenes</span></div>
-        </div>
-        <span class="flow-arrow" aria-hidden="true">→</span>
-        <div class="training-flow-node"><strong>PPO fine-tuning</strong><span>16 iterations, asymmetric critic</span></div>
-      </div>
-      <div class="data-intro editorial-row">
-        <div><p class="eyebrow">Student policy</p><h3>1.63M parameters.<br>Masked depth in, steering out.</h3></div>
-        <div class="editorial-copy"><p><strong>Input:</strong> the last four frames of depth masked to the target pallet and cargo (72 × 128), two coordinate channels, and fork height. <strong>Output:</strong> forward speed, steering, and a lift trigger, at 15 Hz.</p><p><strong>Network:</strong> five strided convolutions and an MLP. The PPO critic additionally reads simulator-state alignment errors and is used only during training.</p></div>
-      </div>
-      <div class="data-intro editorial-row">
-        <div><p class="eyebrow">Finding</p><h3>Offline error<br>did not predict closed-loop success.</h3></div>
-        <div class="editorial-copy"><p>A first student that also received measured steering and speed reached near-zero offline action error but failed every closed-loop trial <strong>(0/8)</strong>: it had learned to repeat its previous action. Keeping only fork height as proprioception raised offline error and closed-loop success to <strong>26/30</strong>.</p><p>PPO fine-tuning did not change the student's behavior on held-out scenes (27/30 before and after). The remaining failures are scenes where the teacher itself runs out of time, so imitation and the reward signal both stop there.</p></div>
-      </div>
-      <div class="evaluation-scopes">
-        <div><p class="scope-code">Stratified benchmark</p><h3>144 unseen scenes</h3><p>Procedurally generated scenes in 12 difficulty strata by initial lateral offset (0 to over 400 mm) and yaw (0 to over 10°), 12 scenes each. Strict scoring with fork-to-pocket error ≤ 20 mm.</p></div>
-        <div><p class="scope-code">Sensor noise</p><h3>Same scenes, paired</h3><p>Depth noise, dropout, camera extrinsic error, fork mounting error and actuation delay, at values taken from depth-camera and hand-eye calibration references. Segmentation by Grounded SAM 2; no ground-truth masks.</p></div>
-      </div>
-      <div class="evaluation-tables">
-        <div>
-          <table class="research-table outcome-table">
-            <caption><span>No noise</span>144 scenes · strict success within 60 s / 120 s</caption>
-            <thead><tr><th scope="col">Method</th><th scope="col">60 s</th><th scope="col">120 s</th></tr></thead>
-            <tbody>
-              <tr><th scope="row">Privileged teacher</th><td><strong>66.7%</strong><span class="table-detail">96/144</span></td><td><strong>99.3%</strong><span class="table-detail">143/144</span></td></tr>
-              <tr class="ours-row"><th scope="row">Learned student</th><td><strong>68.1%</strong><span class="table-detail">98/144</span></td><td><strong>98.6%</strong><span class="table-detail">142/144</span></td></tr>
-              <tr><th scope="row">Geometric controller</th><td><strong>70.1%</strong><span class="table-detail">101/144</span></td><td><strong>95.8%</strong><span class="table-detail">138/144</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div>
-          <table class="research-table outcome-table">
-            <caption><span>Nominal sensor noise</span>144 scenes · student uses Grounded SAM 2 masks</caption>
-            <thead><tr><th scope="col">Method</th><th scope="col">60 s</th><th scope="col">120 s</th></tr></thead>
-            <tbody>
-              <tr class="ours-row"><th scope="row">Learned student</th><td><strong>43.8%</strong><span class="table-detail">63/144</span></td><td><strong>58.3%</strong><span class="table-detail">84/144</span></td></tr>
-              <tr><th scope="row">Geometric controller</th><td><strong>31.2%</strong><span class="table-detail">45/144</span></td><td><strong>41.7%</strong><span class="table-detail">60/144</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="data-intro editorial-row">
-        <div><p class="eyebrow">Reading the tables</p><h3>Matched without noise.<br>Ahead under depth noise.</h3></div>
-        <div class="editorial-copy"><p>Without noise the student, its teacher and the geometric controller are statistically indistinguishable; the geometric controller here is a revised version that fits the pallet face and shares the teacher's control law. The 60 s column mostly measures speed: hard scenes need several re-approaches of about 25 s each.</p><p>Under nominal noise the student is ahead (paired McNemar test, <i>p</i> &lt; 0.001 at 120 s). The advantage comes almost entirely from depth noise. Camera and fork mounting errors degrade both methods, and absolute success under noise remains low. With Grounded SAM 2 masks and no noise the student reaches 96.5% (139/144) at 120 s.</p></div>
       </div>
     </section>
     <section class="section section-separated container reading-width" data-section="citation" hidden>
