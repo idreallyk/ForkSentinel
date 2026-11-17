@@ -34,6 +34,10 @@
         <img style="display:block;width:100%;height:auto" src="assets/procedural-scenes.jpg" width="1616" height="458" alt="Four procedurally generated warehouse scenes. Top row: overview of the forklift facing a rack. Bottom row: the fork-mounted camera view of the target pallet between its neighbours." decoding="async" loading="lazy">
         <figcaption><strong>Procedural scenes.</strong> Rack layout, floor, lighting, neighbouring pallets and cargo vary by seed. Top, overview. Bottom, the fork-mounted camera view the policy acts from.</figcaption>
       </figure>
+      <figure class="publication-figure plain-figure">
+        <video style="display:block;width:100%;height:auto;background:#0a141e" controls playsinline muted preload="metadata" poster="assets/ppo-s3130-poster.jpg" src="assets/ppo-s3130.mp4" width="1280" height="720" aria-label="Learned policy picking up a pallet in unseen test scene S3130"></video>
+        <figcaption><strong>Learned policy on an unseen test scene.</strong> Start offset 288 mm lateral and 7.1° yaw. The run is replayed at 1× from its recorded poses. Top inset, the fork camera; bottom inset, the masked depth the policy actually receives (target pallet and cargo in colour, context dimmed for display). Strict success with 4.8 mm hole error at 28.3 s.</figcaption>
+      </figure>
     </section>
     <section class="task-section container" id="task" data-section="task" aria-labelledby="task-title">
       <div class="section-intro">
