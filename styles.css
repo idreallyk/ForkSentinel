@@ -51,6 +51,7 @@ a:focus-visible { outline: 3px solid #64748b; outline-offset: 5px; border-radius
 }
 .overview-section, .task-section { border-top: 1px solid var(--border); padding-block: 64px 76px; }
 .overview-summary { margin: 16px 0 0; font-size: 17px; line-height: 1.8; }
+.project-authors { margin: 18px auto 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
 .section-intro { max-width: 860px; }
 .eyebrow { margin: 0 0 18px; color: var(--text); font-size: 13px; font-weight: 600; line-height: 1.5; letter-spacing: 0.02em; }
 .section-intro h2 { margin: 0; color: var(--heading); font-size: clamp(30px, 3.5vw, 44px); font-weight: 650; line-height: 1.16; letter-spacing: -0.035em; }
